@@ -15,7 +15,23 @@ export default function App() {
     setTasks(previousTasks => previousTasks.map(task => ({
       ...task,
       selected: task.id === selectedTask.id ? true : false
-    })))
+    })));
+  }
+
+  function finishTask() {
+    if (selected) {
+      setSelected(undefined);
+      setTasks(previousTasks => previousTasks.map(task => {
+        if (task.id === selected.id) {
+          return {
+            ...task,
+            selected: false,
+            completed: true
+          }
+        }
+        return task;
+      }))
+    }
   }
 
   return (
@@ -25,7 +41,10 @@ export default function App() {
         tasks={tasks}
         selectTask={selectTask}
       />
-      <Cronometer selected={selected} />
+      <Cronometer
+        selected={selected}
+        finishTask={finishTask}
+      />
     </div>
   );
 }
